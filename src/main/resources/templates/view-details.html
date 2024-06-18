@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" th:href="@{/css/demo-form.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-table.css}" />
+<link rel="stylesheet" th:href="@{/css/general.css}" />
+
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+
+<body>
+<div data-th-replace="/fragments/fragment-entete :: frag-entete"></div>
+
+	<form action="" >
+		<h1>Détail du film</h1>
+		<ul class="flex-outer">
+			<li><label for="InputGenre">Genre : </label><input
+				id="InputGenre" type="text" th:value="${filmDetail.genre}" /></li>
+			<li><label for="">Année : </label><input type="text"
+				th:value="${filmDetail.annee}" /></li>
+			<li><label for="">Titre : </label><input type="text"
+				th:value="${filmDetail.titre}" /></li>
+			<li><label for="">Réalisateur : </label><input type="text"
+				th:value="${filmDetail.realisateur.nom} + ' ' + ${filmDetail.realisateur.prenom}" /></li>
+			<li><label for="">Durée : </label><input type="text"
+				th:value="${filmDetail.duree}" /></li>
+			<li><label for="selectActors">Acteur(s):</label> 
+			<select id="selectActors"
+				multiple="multiple">
+					<option value="" th:each="a : ${filmDetail.acteurs}" th:text="${a.prenom + ' '+ a.nom}"> </option>
+
+			</select></li>
+
+		</ul>
+	</form>
+	<div data-th-replace="/fragments/fragment-piedpage :: frag-piedpage"></div>
+</body>
+</html>

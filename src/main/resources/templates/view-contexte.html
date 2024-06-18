@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+<link rel="stylesheet" th:href="@{/css/general.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-form.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-table.css}" />
+<meta charset="UTF-8" />
+<title>Document</title>
+</head>
+<body>
+	<div data-th-replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+
+	<main>
+		<h1>Contexte</h1>
+		<th:block th:if="${membreSession.id == 0}">
+			<a href="/contexte/session?email=abaille@campus-eni.fr">Anne-Lise</a>
+			<a href="/contexte/session?email=jtrillard@campus-eni.fr">Julien</a>
+			<a href="/contexte/session?email=sgobin@campus-eni.fr">Stéphane</a>
+		</th:block>
+		<th:block th:if="${membreSession.id != 0}">
+			<a href="/contexte/cloture">Déconnexion</a>
+		</th:block>
+	</main>
+
+
+
+
+
+
+
+
+
+
+
+	<div data-th-replace="/fragments/fragment-piedpage :: frag-piedpage"></div>
+
+</body>
+</html>

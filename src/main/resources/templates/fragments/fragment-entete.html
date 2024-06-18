@@ -1,0 +1,12 @@
+<header>
+<nav class="container" data-th-fragment="frag-entete">
+<img th:src="@{/images/logoFilmotheque.png}" alt="" />
+<p >Filmothèque <span th:if="${membreSession != null && membreSession.id != 0}"  th:text="'['  + ${membreSession.prenom} + ']'"></span> </p>
+	<ul>
+		
+		<li><a href="/films">Films</a>	</li>
+		<li><a href="creation-film">Création Films</a>	</li>
+		<li><a href="/contexte">Contexte</a>	</li>
+	</ul>
+</nav> 
+</header>

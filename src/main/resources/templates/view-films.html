@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" th:href="@{/css/demo-table.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-form.css}" />
+<link rel="stylesheet" th:href="@{/css/general.css}" />
+<title>Insert title here</title>
+</head>
+
+<body>
+<div data-th-replace="/fragments/fragment-entete :: frag-entete"></div>
+	<h1>Les films de l'ENI</h1>
+	<table>
+		<th>Année</th>
+		<th>Genre</th>
+
+		<th>Titre
+		</thead>
+		<th>Réalisateur</th>
+		<th>Action</th>
+		<tbody>
+
+			<tr th:each="item : ${film}">
+				<td th:text="${item.annee}"></td>
+				<td th:text="${item.genre.titre}"></td>
+				<td th:text="${item.titre}"></td>
+				<td th:text="${item.realisateur.prenom} "></td>
+				<td><a th:href="@{/details(id=${item.id})}">Détails</a></td>
+			</tr>
+
+		</tbody>
+	</table>
+	
+	<div data-th-replace="/fragments/fragment-piedpage :: frag-piedpage"></div>
+
+</body>
+</html>

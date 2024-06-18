@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+<link rel="stylesheet" th:href="@{/css/general.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-form.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-table.css}" />
+	<meta charset="UTF-8" />
+	<title>Document</title>
+</head>
+<body>
+
+<div data-th-replace="~{/fragments/fragment-entete :: frag-entete}"></div>
+
+
+
+
+
+
+
+<form action="" method="POST">
+<h1>Création d'un Film [En cours de construction]</h1>
+<ul>
+	<li><label for="inputGenre">Genre : </label> <select name="listeGenre" id="inputGenre">
+	<option value="" th:each="item : ${listeGenre}" th:text="${item.titre}"></option>
+</select>
+	</li>
+</ul>
+
+</form>
+
+
+<div data-th-replace="/fragments/fragment-piedpage :: frag-piedpage"></div>
+	
+</body>
+</html>
