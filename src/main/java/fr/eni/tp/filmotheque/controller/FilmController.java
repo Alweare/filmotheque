@@ -51,27 +51,26 @@ public class FilmController{
 
 
 	}
-//	@GetMapping("/creation-film")
-//	public String afficherGenre() {
-//		
-//		
-//		
-//		return "view-creation-film";
-//		
-//	}
-	
+
 	@GetMapping("/creation-film")
-	public String afficherCreationFilm(@ModelAttribute("listeGenre")List<Genre> listeGenre, Model model) {
+	public String afficherCreationFilm(@ModelAttribute("membreSession") Membre membre,Model model) {
+		if(!membre.isAdmin()) {
+			return "redirect:/films";
+		}else {
+		
+		
+		
 		Film filmCreer = new Film();
 		
 		model.addAttribute("filmCreer", filmCreer);
 	
 		return "view-creation-film";
-		
+		}
 	}
 	
 	@PostMapping("/creation-film")
-	public String creationFilm(@ModelAttribute("filmCreer")Film filmCreer) {
+	public String creationFilm( @ModelAttribute("filmCreer")Film filmCreer) {
+		
 		
 		this.filmService.creerFilm(filmCreer);
 		
@@ -85,7 +84,6 @@ public class FilmController{
 	@ModelAttribute("listeGenre")
 	public List<Genre> listeGenre() {
 		List<Genre> listeGenre = this.filmService.consulterGenres();
-		System.out.println("model attribute de la liste de genre");
 	
 		return listeGenre;
 		
