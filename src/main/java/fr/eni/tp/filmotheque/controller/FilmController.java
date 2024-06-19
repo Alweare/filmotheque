@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -15,9 +16,10 @@ import fr.eni.tp.filmotheque.bll.FilmService;
 import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Membre;
+import fr.eni.tp.filmotheque.bo.Participant;
 
 @Controller
-@SessionAttributes( {"listeGenre","membreSession"})
+@SessionAttributes( {"listeGenre","membreSession","listeActeurs"})
 public class FilmController{
 
 	private FilmService filmService;
@@ -49,14 +51,36 @@ public class FilmController{
 
 
 	}
+//	@GetMapping("/creation-film")
+//	public String afficherGenre() {
+//		
+//		
+//		
+//		return "view-creation-film";
+//		
+//	}
+	
 	@GetMapping("/creation-film")
-	public String afficherGenre() {
+	public String afficherCreationFilm(Model model) {
+		Film filmCreer = new Film();
+		
+		model.addAttribute("filmCreer", filmCreer);
 		
 		
 		
 		return "view-creation-film";
 		
 	}
+	
+	@PostMapping("/creation-film")
+	public String creationFilm(@ModelAttribute("filmCreer")Film filmCreer) {
+		
+		this.filmService.creerFilm(filmCreer);
+		
+		return "redirect:/films";
+		
+	}
+	
 
 
 
@@ -70,5 +94,11 @@ public class FilmController{
 
 
 	}
+	@ModelAttribute("listeActeurs")
+	public List<Participant> listeActeur(){
+		List<Participant> listeActeur = this.filmService.consulterParticipants();
+		return listeActeur;
+	}
+
 
 }

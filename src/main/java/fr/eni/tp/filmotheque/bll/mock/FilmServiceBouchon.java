@@ -12,6 +12,7 @@ import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.bo.Participant;
+
 @Service
 @Profile("dev")
 public class FilmServiceBouchon implements FilmService {
@@ -21,6 +22,7 @@ public class FilmServiceBouchon implements FilmService {
 	private static List<Genre> lstGenres = new ArrayList<>();
 	private static List<Participant> lstParticipants = new ArrayList<>();
 	private static int indexFilms = 1;
+	private static int indexAvis = 2;
 
 	// Représente la table en base de données des genres des films
 	private static final String[] genres = { "Animation", "Science-fiction", "Documentaire", "Action", "Comédie",
@@ -141,6 +143,30 @@ public class FilmServiceBouchon implements FilmService {
 		Membre membre1 = new Membre(1, "Baille", "Anne-Lise", "abaille@campus-eni.fr", null);
 		Avis avis = new Avis(1, 4, "On rit du début à la fin", membre1);
 		bienvenueChezLesChtis.getAvis().add(avis);
+	}
+
+	@Override
+	public String consulterTitreFilm(long id) {
+		Film film = consulterFilmParId(id);
+		if (film != null)
+			return film.getTitre();
+		return null;
+	}
+
+	@Override
+	public void publierAvis(Avis avis, long idFilm) {
+		Film filmSelectionne = consulterFilmParId(idFilm);
+		if (filmSelectionne != null) {
+			avis.setId(indexAvis++);
+			filmSelectionne.getAvis().add(avis);
+		}
+
+	}
+
+	@Override
+	public List<Avis> consulterAvis(long idFilm) {
+		Film filmSelectionne = consulterFilmParId(idFilm);
+		return filmSelectionne.getAvis();
 	}
 
 	@Override

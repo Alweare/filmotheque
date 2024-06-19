@@ -31,6 +31,8 @@
 					<option value="" th:each="a : ${filmDetail.acteurs}" th:text="${a.prenom + ' '+ a.nom}"> </option>
 
 			</select></li>
+		
+			<li th:if="${filmDetail.avis != null}" ><label for="" >Commentaire : </label> <input type="text" th:each="item : ${filmDetail.avis}" th:value="${item.commentaire} + '('+${item.note}+')' + ' - ' + ${item.membre.pseudo}" /> </li>
 
 		</ul>
 	</form>
