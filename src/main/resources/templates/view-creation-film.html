@@ -23,17 +23,17 @@
 		<ul>
 			<li><label for="inputGenre">Genre : </label> <select
 				id="inputGenre" th:field="*{genre}">
-					<option value="" th:each="item : ${listeGenre}"
+					<option  th:each="item : ${listeGenre}"
 						th:value="${item.titre}" th:text="${item.titre}"></option>
 			</select></li>
 			<li><label for="inputAnnee">Année:</label> <input type="number"
-				th:field="*{annee}" required min="1" /></li>
+				th:field="*{annee}" required min="1895" max="2100" /></li> <!-- th:field génère 2 attributs value et name -->
 			<li><label for="inputTitre">Titre:</label> <input type="text"
 				th:field="*{titre}" /></li>
-			<li><label for="inputRéalisateur">Réalisateur:</label> <select
+			<li><label for="selectRéalisateur">Réalisateur:</label> <select
 				 th:field="*{realisateur}">
 
-					<option  th:each="item : ${listeActeurs}"
+					<option id="selectRéalisateur" th:each="item : ${listeActeurs}"
 						th:value="${item.id}" th:text="${item.nom + ' ' + item.prenom}"></option>
 
 			</select></li>

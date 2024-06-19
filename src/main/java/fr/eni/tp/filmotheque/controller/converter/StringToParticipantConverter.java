@@ -7,13 +7,13 @@ import fr.eni.tp.filmotheque.bll.FilmService;
 import fr.eni.tp.filmotheque.bo.Participant;
 
 @Component
-public class idParticipantToString implements Converter<String, Participant>{
+public class StringToParticipantConverter implements Converter<String, Participant>{
 	
 	private FilmService filmService;
 	
 	
 
-	public idParticipantToString(FilmService filmService) {
+	public StringToParticipantConverter(FilmService filmService) {
 		this.filmService = filmService;
 	}
 

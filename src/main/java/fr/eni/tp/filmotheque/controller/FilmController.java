@@ -19,7 +19,7 @@ import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.bo.Participant;
 
 @Controller
-@SessionAttributes( {"listeGenre","membreSession","listeActeurs"})
+@SessionAttributes( {"membreSession","listeActeurs"})
 public class FilmController{
 
 	private FilmService filmService;
@@ -61,13 +61,11 @@ public class FilmController{
 //	}
 	
 	@GetMapping("/creation-film")
-	public String afficherCreationFilm(Model model) {
+	public String afficherCreationFilm(@ModelAttribute("listeGenre")List<Genre> listeGenre, Model model) {
 		Film filmCreer = new Film();
 		
 		model.addAttribute("filmCreer", filmCreer);
-		
-		
-		
+	
 		return "view-creation-film";
 		
 	}

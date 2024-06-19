@@ -20,6 +20,10 @@ public class Avis {
 		this.commentaire = commentaire;
 	}
 
+	public Avis() {
+		
+	}
+
 	public long getId() {
 		return id;
 	}
