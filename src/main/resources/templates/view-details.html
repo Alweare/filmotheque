@@ -10,9 +10,9 @@
 </head>
 
 <body>
-<div data-th-replace="/fragments/fragment-entete :: frag-entete"></div>
+	<div data-th-replace="/fragments/fragment-entete :: frag-entete"></div>
 
-	<form action="" >
+	<form action="">
 		<h1>Détail du film</h1>
 		<ul class="flex-outer">
 			<li><label for="InputGenre">Genre : </label><input
@@ -25,14 +25,20 @@
 				th:value="${filmDetail.realisateur.nom} + ' ' + ${filmDetail.realisateur.prenom}" /></li>
 			<li><label for="">Durée : </label><input type="text"
 				th:value="${filmDetail.duree}" /></li>
-			<li><label for="selectActors">Acteur(s):</label> 
-			<select id="selectActors"
-				multiple="multiple">
-					<option value="" th:each="a : ${filmDetail.acteurs}" th:text="${a.prenom + ' '+ a.nom}"> </option>
+			<li><label for="selectActors">Acteur(s):</label> <select
+				id="selectActors" multiple="multiple">
+					<option value="" th:each="a : ${filmDetail.acteurs}"
+						th:text="${a.prenom + ' '+ a.nom}"></option>
 
 			</select></li>
-		
-			<li th:if="${filmDetail.avis != null}" ><label for="" >Commentaire : </label> <input type="text" th:each="item : ${filmDetail.avis}" th:value="${item.commentaire} + '('+${item.note}+')' + ' - ' + ${item.membre.pseudo}" /> </li>
+
+			<li th:if="${filmDetail.avis != null}"><label for="">Commentaire
+					: </label> 
+					
+
+				<input type="text" th:each="item : ${filmDetail.avis}"
+				th:value="${item.commentaire} + '('+${item.note}+')' + ' - ' + ${item.membre.pseudo}" /> 
+			</li>
 
 		</ul>
 	</form>

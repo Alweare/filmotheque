@@ -1,5 +1,6 @@
 package fr.eni.tp.filmotheque.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -38,9 +39,11 @@ public class AvisController {
 	public String afficherCreationAvis(@RequestParam("idFilm")long idFilm, Model model) {
 		Film film = this.filmService.consulterFilmParId(idFilm);
 		Avis avis = new Avis();
+		
 		model.addAttribute("avis", avis);
 		model.addAttribute("idFilm", idFilm);
-		film.setAvis(avis);
+		
+		
 		
 		
 		return "view-creation-avis";
@@ -49,9 +52,13 @@ public class AvisController {
 	
 	@PostMapping
 	public String creerAvis(@ModelAttribute("membreSession")Membre membreSession,Avis avis,@RequestParam("idFilm") long idFilm) {
-		
-		this.filmService.publierAvis(avis, idFilm);
+		Film film = this.filmService.consulterFilmParId(idFilm);
+		List<Avis> listeAvis = new ArrayList<Avis>();
+		listeAvis.add(avis);
+		film.setAvis(listeAvis);
 		avis.setMembre(membreSession);
+		this.filmService.publierAvis(avis, idFilm);
+
 		
 		return "redirect:/films";
 		
