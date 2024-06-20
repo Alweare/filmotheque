@@ -3,7 +3,7 @@ package fr.eni.tp.filmotheque.bo;
 import java.util.Objects;
 
 public abstract class Personne {
-	private long id;
+	private long id;	
 	private String nom;
 	private String prenom;
 	

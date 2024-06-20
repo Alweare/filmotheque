@@ -2,8 +2,12 @@ package fr.eni.tp.filmotheque.bo;
 
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Genre {
+	@NotBlank(message="il doit y avoir un genre")
 	private long id;
+	@NotBlank(message="il doit y avoir un titre")
 	private String titre;
 	
 	public Genre(long id, String titre) {

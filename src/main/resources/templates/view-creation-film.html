@@ -4,6 +4,7 @@
 <link rel="stylesheet" th:href="@{/css/general.css}" />
 <link rel="stylesheet" th:href="@{/css/demo-form.css}" />
 <link rel="stylesheet" th:href="@{/css/demo-table.css}" />
+<link rel="stylesheet" th:href="@{/css/demo-error.css}" />
 <meta charset="UTF-8" />
 <title>Document</title>
 </head>
@@ -19,26 +20,40 @@
 
 	<form th:action="@{/creation-film}" method="POST"
 		th:object="${filmCreer}">
+		<div th:replace="~{/fragments/errors/fragment-errors :: frag-errors}"></div>
 		<h1>Création d'un Film [En cours de construction]</h1>
 		<ul>
 			<li><label for="inputGenre">Genre : </label> <select
-				id="inputGenre" th:field="*{genre}">
+				id="inputGenre" th:field="*{genre}" multiple="multiple">
 					<option  th:each="item : ${listeGenre}"
-						th:value="${item.titre}" th:text="${item.titre}"></option>
-			</select></li>
-			<li><label for="inputAnnee">Année:</label> <input type="number"
-				th:field="*{annee}" required min="1895" max="2100" /></li> <!-- th:field génère 2 attributs value et name -->
+						th:value="${item.id}" th:text="${item.titre}"></option>
+			</select>
+			<div th:replace="~{/fragments/errors/fragment-error :: frag-error('genre')}"></div>
+			</li>
+			<li><label for="inputAnnee">Année:</label> <input type="number"	
+				th:field="*{annee}"  />
+				<div th:replace="~{/fragments/errors/fragment-error :: frag-error('annee')}"></div>
+				
+				</li> <!-- th:field génère 2 attributs value et name -->
 			<li><label for="inputTitre">Titre:</label> <input type="text"
-				th:field="*{titre}" /></li>
+				th:field="*{titre}" />
+				<div th:replace="~{/fragments/errors/fragment-error :: frag-error('titre')}"></div>
+				</li>
 			<li><label for="selectRéalisateur">Réalisateur:</label> <select
-				 th:field="*{realisateur}">
+				 th:field="*{realisateur}" multiple="multiple">
 
 					<option id="selectRéalisateur" th:each="item : ${listeActeurs}"
 						th:value="${item.id}" th:text="${item.nom + ' ' + item.prenom}"></option>
 
-			</select></li>
+			</select>
+			<div th:replace="~{/fragments/errors/fragment-error :: frag-error('realisateur')}"></div>
+			
+			
+			</li>
 			<li><label for="inputDuree">Durée:</label> <input type="number"
-				min="1" th:field="*{duree}" required/></li>
+				min="1" th:field="*{duree}"/>
+				<div th:replace="~{/fragments/errors/fragment-error :: frag-error('duree')}"></div>
+				</li>
 			<li><label for="inputActeurs">Acteurs:</label> <select name=""
 				id="" multiple="multiple" th:field="*{acteurs}">
 					<option value="" th:each="item : ${listeActeurs}"
@@ -46,6 +61,7 @@
 			</select></li>
 			<li><label for="inputSynopsis">Synopsis:</label> <textarea
 					name="" id="" cols="30" rows="10" th:field="*{synopsis}"></textarea>
+					<div th:replace="~{/fragments/errors/fragment-error :: frag-error('synopsis')}"></div>
 			</li>
 		</ul>
 		<button type="submit">enregistrer</button>

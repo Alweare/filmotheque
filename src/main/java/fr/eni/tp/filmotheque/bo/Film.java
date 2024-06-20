@@ -4,15 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class Film {
 	private long id;
+	@NotBlank(message="ne doit pas être vide")
+	@Size(max=250)
 	private String titre;
+	@NotNull(message="il faut déclarer une année")
+	@Min(value = 1900, message="l'année doit être au minimum de 1900")
 	private int annee;
+	@NotNull(message="la durée doit être supérieur a 0")
+
+	@Min(value = 0)
 	private int duree;
+	@Size(min=20, max = 250)
 	private String synopsis;
+	@NotNull(message="il faut selectionner un genre")
 	private Genre genre;
 	private List<Avis> Avis;
 	private List<Participant> acteurs;
+	@NotNull(message="il faut un realisateur")
 	private Participant realisateur;
 
 	public Film() {
