@@ -25,7 +25,7 @@
 				<td th:text="${item.annee}"></td>
 				<td th:text="${item.genre.titre}"></td>
 				<td th:text="${item.titre}"></td>
-				<td th:text="${item.realisateur.prenom} "></td>
+				<td th:text="${item.realisateur.prenom + ' ' + item.realisateur.nom} "></td>
 				<td><a th:href="@{/details(id=${item.id})}">Détails</a><a  th:if="${membreSession != null && membreSession.id != 0}"th:href="@{/creation-avis(idFilm=${item.id})}">Avis</a></td>
 				
 			</tr>

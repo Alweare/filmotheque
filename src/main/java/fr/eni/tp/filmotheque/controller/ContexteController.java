@@ -25,7 +25,6 @@ public class ContexteController {
 
 
 	
-	
 	public ContexteController(ContexteService contexteService) {
 		this.contexteService = contexteService;
 	}

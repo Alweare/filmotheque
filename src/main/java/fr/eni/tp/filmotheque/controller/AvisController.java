@@ -3,6 +3,7 @@ package fr.eni.tp.filmotheque.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import fr.eni.tp.filmotheque.bo.Membre;
 @Controller
 @RequestMapping("/creation-avis")
 @SessionAttributes( {"membreSession"})
+@Profile("dev")
 public class AvisController {
 	
 	private FilmService filmService;

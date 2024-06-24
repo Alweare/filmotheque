@@ -15,4 +15,8 @@ public class Participant extends Personne{
 		// TODO Auto-generated constructor stub
 	}
 
+	public Participant() {
+		// TODO Auto-generated constructor stub
+	}
+
 }
