@@ -33,8 +33,11 @@ public class FilmServiceImpl implements FilmService {
 	@Override
 	public List<Film> consulterFilms() {
 		List<Film> listeFilm = filmDAO.findAll();
-		listeFilm.forEach(c -> c.setGenre(genreDAO.read(c.getGenre().getId())));
-		listeFilm.forEach(p -> p.setRealisateur(participantDAO.read(p.getRealisateur().getId())));
+		listeFilm.forEach(c -> {
+			c.setGenre(genreDAO.read(c.getGenre().getId()));
+		c.setRealisateur(participantDAO.read(c.getRealisateur().getId()));
+		});
+	
 		
 		return  listeFilm;
 	}
