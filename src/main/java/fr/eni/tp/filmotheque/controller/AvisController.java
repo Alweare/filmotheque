@@ -21,7 +21,6 @@ import fr.eni.tp.filmotheque.bo.Membre;
 @Controller
 @RequestMapping("/creation-avis")
 @SessionAttributes( {"membreSession"})
-@Profile("dev")
 public class AvisController {
 	
 	private FilmService filmService;

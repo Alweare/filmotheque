@@ -37,7 +37,7 @@
 					
 
 				<input type="text" th:each="item : ${filmDetail.avis}"
-				th:value="${item.commentaire} + '('+${item.note}+')' + ' - ' + ${item.membre.pseudo}" /> 
+				th:value="${item.commentaire} + '('+${item.note}+')' + ' - ' + ${item.membre.nom}" /> 
 			</li>
 
 		</ul>

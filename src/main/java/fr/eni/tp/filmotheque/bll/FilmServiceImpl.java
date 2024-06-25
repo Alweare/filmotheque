@@ -9,8 +9,10 @@ import fr.eni.tp.filmotheque.bo.Avis;
 import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.dal.AvisDAO;
 import fr.eni.tp.filmotheque.dal.FilmDAO;
 import fr.eni.tp.filmotheque.dal.GenreDAO;
+import fr.eni.tp.filmotheque.dal.MembreDAO;
 import fr.eni.tp.filmotheque.dal.ParticipantDAO;
 @Service
 
@@ -19,14 +21,18 @@ public class FilmServiceImpl implements FilmService {
 	private FilmDAO filmDAO;
 	private GenreDAO genreDAO;
 	private ParticipantDAO participantDAO;
+	private AvisDAO avisDAO;
+	private MembreDAO membreDAO;
 	
 	
 
-	public FilmServiceImpl(FilmDAO filmDAO, GenreDAO genreDAO, ParticipantDAO participantDAO) {
+	public FilmServiceImpl(FilmDAO filmDAO, GenreDAO genreDAO, ParticipantDAO participantDAO, AvisDAO avisDAO,MembreDAO membreDAO) {
 	
 		this.filmDAO = filmDAO;
 		this.genreDAO = genreDAO;
 		this.participantDAO = participantDAO;
+		this.avisDAO = avisDAO;
+		this.membreDAO = membreDAO;
 		
 	}
 
@@ -45,11 +51,20 @@ public class FilmServiceImpl implements FilmService {
 	@Override
 	public Film consulterFilmParId(long id) {
 		Film f  = filmDAO.read(id);
-		Genre g = genreDAO.read(id);
-		
-		if (g !=null) {
-			f.setGenre(g);
+		Genre g = genreDAO.read(f.getGenre().getId());
+		Participant p = participantDAO.read(f.getRealisateur().getId());
+		List<Avis> listeAvis = avisDAO.findByFilm(f.getId());
+	
+		f.setGenre(g);
+		f.setRealisateur(p);
+		f.setActeurs(participantDAO.findActeurs(f.getId()));
+		if(listeAvis != null) {
+			listeAvis.forEach(a -> a.setMembre(membreDAO.read(a.getMembre().getId())));
+			f.setAvis(listeAvis);	
 		}
+		
+	
+		
 		
 		return f;
 	}
@@ -73,14 +88,14 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public Participant consulterParticipantParId(long id) {
-		Film f = filmDAO.read(id);
-		Participant p = participantDAO.read(id);
-		if(p != null ) {
-			f.setRealisateur(p);
-		}
-		
+//		Film f = filmDAO.read(id);
+//		Participant p = participantDAO.read(id);
+//		if(p != null ) {
+//			f.setRealisateur(p);
+//		}
+//		
 
-		return p;
+		return participantDAO.read(id);
 	}
 
 	@Override
@@ -92,6 +107,7 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public String consulterTitreFilm(long id) {
+	
 		
 		return filmDAO.findTitre(id);
 	}
@@ -104,8 +120,9 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public List<Avis> consulterAvis(long idFilm) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		
+		return avisDAO.findByFilm(idFilm);
 	}
 
 	@Override

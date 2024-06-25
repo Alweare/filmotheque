@@ -4,14 +4,24 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import fr.eni.tp.filmotheque.bo.Membre;
+import fr.eni.tp.filmotheque.dal.MembreDAO;
 @Service
 
 public class ContexteServiceImpl implements ContexteService{
+	private MembreDAO membreDAO;
+	
+	
+
+	public ContexteServiceImpl(MembreDAO membreDAO) {
+		this.membreDAO = membreDAO;
+	}
+
+
 
 	@Override
 	public Membre charger(String email) {
 		// TODO Auto-generated method stub
-		return null;
+		return membreDAO.read(email);
 	}
 
 }

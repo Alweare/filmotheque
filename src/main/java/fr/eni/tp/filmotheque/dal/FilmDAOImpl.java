@@ -42,7 +42,7 @@ public class FilmDAOImpl implements FilmDAO {
 		MapSqlParameterSource mapParameter = new MapSqlParameterSource();
 		mapParameter.addValue("id", id);
 		
-		return jdbcTemplate.queryForObject(FIND_ALL, mapParameter, new BeanPropertyRowMapper<>(Film.class));
+		return jdbcTemplate.queryForObject(FIND_BY_ID, mapParameter, new FilmDAORowMapper());
 	}
 
 	@Override
@@ -73,13 +73,11 @@ public class FilmDAOImpl implements FilmDAO {
 			// Association
 			Genre genre = new Genre();
 			genre.setId(rs.getLong("id_genre"));
-//			genre.setTitre(rs.getString("titre"));
 			f.setGenre(genre);
 			
 			Participant realisateur = new Participant();
 			realisateur.setId(rs.getLong("id_realisateur"));
-//			realisateur.setNom(rs.getString("nom"));
-//			realisateur.setPrenom(rs.getNString("prenom"));
+
 			f.setRealisateur(realisateur);
 
 			return f;
