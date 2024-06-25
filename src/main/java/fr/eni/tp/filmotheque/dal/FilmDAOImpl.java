@@ -19,7 +19,7 @@ import fr.eni.tp.filmotheque.bo.Participant;
 public class FilmDAOImpl implements FilmDAO {
 	private static final String FIND_ALL = "SELECT id,titre,annee,duree,synopsis,id_realisateur,id_genre FROM FILM";
 	private static final String FIND_BY_ID = "SELECT id,titre,annee,duree,synopsis,id_realisateur,id_genre FROM FILM WHERE id =:id";
-	private static final String FIND_BY_TITLE = "SELECT id,titre,annee,duree,synopsis,id_realisateur,id_genre FROM FILM WHERE titre = :titre";
+	private static final String FIND_BY_TITLE = "SELECT titre FROM FILM WHERE id = :id";
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	
@@ -56,7 +56,7 @@ public class FilmDAOImpl implements FilmDAO {
 		MapSqlParameterSource mapParameter = new MapSqlParameterSource();
 		mapParameter.addValue("id", id);
 	
-		return jdbcTemplate.queryForObject(FIND_BY_TITLE, mapParameter, (rs, rowNum) -> rs.getString("titre"));
+		return jdbcTemplate.queryForObject(FIND_BY_TITLE, mapParameter, String.class);
 	}
 	class FilmDAORowMapper implements RowMapper<Film> {
 
