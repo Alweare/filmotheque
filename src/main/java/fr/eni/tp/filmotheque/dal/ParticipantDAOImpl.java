@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.tp.filmotheque.bo.Film;
@@ -20,8 +22,12 @@ public class ParticipantDAOImpl implements ParticipantDAO{
 	private static final String FIND_BY_ID = "SELECT id,nom,prenom FROM PARTICIPANT WHERE id = :id";
 	private static final String FIND_ALL = "SELECT id,nom,prenom FROM PARTICIPANT";
 	private static final String FIND_ACTEURS = "SELECT id,nom,prenom FROM PARTICIPANT INNER JOIN ACTEURS ON PARTICIPANT.id = ACTEURS.id_participant WHERE id_film = :idFilm";
-	private NamedParameterJdbcTemplate jdbcTemplate;
+	private static final String INSERT_ACTEUR = "INSERT INTO ACTEURS (id_film,id_participant) VALUES (:idFilm,:idParticipant)";
+	private static final String COUNT_ID_REAL = "SELECT count(*) FROM PARTICIPANT WHERE id = :idRealisateur";
+	private static final String COUNT_ID_ACTEUR = "SELECT count(*) FROM PARTICIPANT WHERE id = :idActeur";
 	
+	
+	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 
 	public ParticipantDAOImpl(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -52,7 +58,33 @@ public class ParticipantDAOImpl implements ParticipantDAO{
 
 	@Override
 	public void createActeur(long idParticipant, long idFilm) {
-		// TODO Auto-generated method stub
+	
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("idFilm", idFilm);
+		System.out.println(idFilm);
+		mapSqlParameterSource.addValue("idParticipant", idParticipant);
+		System.out.println(idParticipant);
+		
+		jdbcTemplate.update(INSERT_ACTEUR, mapSqlParameterSource);
+		
+	}
+	@Override
+	public int nbIdReal (long idRealisateur) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("idRealisateur", idRealisateur);
+		
+		
+		
+		return jdbcTemplate.queryForObject(COUNT_ID_REAL, mapSqlParameterSource, Integer.class);
+		
+	}
+	@Override
+	public int nbIdActeur (long idActeur) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("idActeur", idActeur);
+		
+		
+		return jdbcTemplate.queryForObject(COUNT_ID_ACTEUR, mapSqlParameterSource, Integer.class);
 		
 	}
 	

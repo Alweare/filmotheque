@@ -3,9 +3,11 @@ package fr.eni.tp.filmotheque.controller;
 
 import java.util.List;
 
+import org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Membre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.exceptions.BusinessException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -77,7 +80,14 @@ public class FilmController{
 			return "view-creation-film";
 		}
 		
-		this.filmService.creerFilm(filmCreer);
+		try {
+			this.filmService.creerFilm(filmCreer);
+		} catch (BusinessException e) {
+			e.getErreurs().forEach(err -> {
+				ObjectError error = new ObjectError("globalError", err);
+				bindingResult.addError(error);
+			});
+		}
 		
 		return "redirect:/films";
 		

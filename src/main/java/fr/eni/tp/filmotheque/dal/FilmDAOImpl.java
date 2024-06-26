@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 
@@ -35,15 +37,23 @@ public class FilmDAOImpl implements FilmDAO {
 
 	@Override
 	public void create(Film film) {
+		
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		KeyHolder keyHolder = new GeneratedKeyHolder();
 		mapSqlParameterSource.addValue("titre", film.getTitre());
 		mapSqlParameterSource.addValue("annee", film.getAnnee());
 		mapSqlParameterSource.addValue("duree", film.getDuree());
 		mapSqlParameterSource.addValue("synopsis", film.getSynopsis());
 		mapSqlParameterSource.addValue("id_genre", film.getGenre().getId());
 		mapSqlParameterSource.addValue("id_realisateur", film.getRealisateur().getId());
-		jdbcTemplate.update(INSERT, mapSqlParameterSource);
 		
+		
+		jdbcTemplate.update(INSERT, mapSqlParameterSource,keyHolder);
+		if (keyHolder !=null && keyHolder.getKey() != null) {
+			
+			film.setId(keyHolder.getKey().longValue());
+		}
+
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import fr.eni.tp.filmotheque.bo.Avis;
 import fr.eni.tp.filmotheque.bo.Film;
 import fr.eni.tp.filmotheque.bo.Genre;
 import fr.eni.tp.filmotheque.bo.Participant;
+import fr.eni.tp.filmotheque.exceptions.BusinessException;
 
 @Service
 public interface FilmService {
@@ -22,7 +23,7 @@ public interface FilmService {
 	
 	Genre consulterGenreParId(long id);
 	Participant consulterParticipantParId(long id);
-	void creerFilm(Film film);
+	void creerFilm(Film film) throws BusinessException;
 	Participant consulterParticipant(long id);
 	String consulterTitreFilm(long id);
 	void publierAvis(Avis avis, long idFilm);

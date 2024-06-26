@@ -12,7 +12,7 @@ public class BusinessException extends Exception{
 	
 	private List<String> erreurs;
 
-	public BusinessException(List<String> erreurs) {
+	public BusinessException() {
 		super();
 		this.erreurs = new ArrayList<String>();
 	}

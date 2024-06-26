@@ -23,7 +23,7 @@ public class Film {
 	private int duree;
 	@Size(min=20, max = 250)
 	private String synopsis;
-	@NotNull(message="il faut selectionner un genre")
+	//@NotNull(message="il faut selectionner un genre")
 	private Genre genre;
 	private List<Avis> Avis;
 	private List<Participant> acteurs;

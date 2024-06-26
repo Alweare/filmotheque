@@ -14,6 +14,7 @@ import fr.eni.tp.filmotheque.bo.Genre;
 public class GenreDAOImpl implements GenreDAO{
 	private static final String FIND_BY_ID ="SELECT id,titre FROM GENRE WHERE id = :id";
 	private static final String FIND_ALL = "SELECT id,titre FROM GENRE";
+	private static final String COUNT_BY_IDGENRE = "SELECT count(*) FROM GENRE WHERE id = :id";
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -36,6 +37,17 @@ public class GenreDAOImpl implements GenreDAO{
 	public List<Genre> findAll() {
 
 		return jdbcTemplate.query(FIND_ALL, new BeanPropertyRowMapper<>(Genre.class));
+	}
+	
+	public int countIdGenre(long id) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("id", id);
+		
+		
+		
+		
+		return jdbcTemplate.queryForObject(COUNT_BY_IDGENRE, mapSqlParameterSource, Integer.class);
+		
 	}
 
 }
