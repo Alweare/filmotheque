@@ -20,6 +20,8 @@ public class FilmDAOImpl implements FilmDAO {
 	private static final String FIND_ALL = "SELECT id,titre,annee,duree,synopsis,id_realisateur,id_genre FROM FILM";
 	private static final String FIND_BY_ID = "SELECT id,titre,annee,duree,synopsis,id_realisateur,id_genre FROM FILM WHERE id =:id";
 	private static final String FIND_BY_TITLE = "SELECT titre FROM FILM WHERE id = :id";
+	private static final String COUNT_BY_ID ="SELECT count(*) FROM FILM WHERE id = :id";
+	private static final String INSERT ="INSERT INTO FILM (titre,annee,duree,synopsis,id_realisateur,id_genre) VALUES (:titre,:annee,:duree,:synopsis,:id_realisateur,:id_genre)";
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
 	
@@ -33,7 +35,14 @@ public class FilmDAOImpl implements FilmDAO {
 
 	@Override
 	public void create(Film film) {
-		// TODO Auto-generated method stub
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("titre", film.getTitre());
+		mapSqlParameterSource.addValue("annee", film.getAnnee());
+		mapSqlParameterSource.addValue("duree", film.getDuree());
+		mapSqlParameterSource.addValue("synopsis", film.getSynopsis());
+		mapSqlParameterSource.addValue("id_genre", film.getGenre().getId());
+		mapSqlParameterSource.addValue("id_realisateur", film.getRealisateur().getId());
+		jdbcTemplate.update(INSERT, mapSqlParameterSource);
 		
 	}
 
@@ -82,6 +91,13 @@ public class FilmDAOImpl implements FilmDAO {
 
 			return f;
 		}
+	}
+	@Override
+	public int nbIdFilm(long id) {
+		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+		mapSqlParameterSource.addValue("id",id);
+		
+		return jdbcTemplate.queryForObject(COUNT_BY_ID, mapSqlParameterSource, Integer.class);
 	}
 	}
 

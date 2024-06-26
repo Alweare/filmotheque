@@ -68,6 +68,23 @@ public class FilmServiceImpl implements FilmService {
 		
 		return f;
 	}
+	
+	// Vérifier que le genre dy film existe bien en bdd 
+	private boolean checkFilmExist(long id) {
+		boolean isValid = false;
+		int nbIdFilm = filmDAO.nbIdFilm(id);
+		if(nbIdFilm == 0) {
+			isValid = true;
+		}
+		
+		
+		return isValid;
+		
+		
+	}
+	// verifier que le réalisateur existe bien en bdd
+	// vérifier que les acteurs du film existent bien en bdd
+	//Vérifier que le titre du film est unique. Interdit de créer 2 films du même titre.
 
 	@Override
 	public List<Genre> consulterGenres() {
@@ -100,7 +117,11 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public void creerFilm(Film film) {
-		// TODO Auto-generated method stub
+		filmDAO.create(film);
+		film.setGenre(genreDAO.read(film.getGenre().getId()));
+		film.setRealisateur(participantDAO.read(film.getRealisateur().getId()));
+		film.setActeurs(participantDAO.findActeurs(film.getId()));
+		film.setAvis(avisDAO.findByFilm(film.getId()));
 		
 	}
 

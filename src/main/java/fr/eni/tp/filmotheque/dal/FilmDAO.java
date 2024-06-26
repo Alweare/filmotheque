@@ -10,5 +10,6 @@ public interface FilmDAO {
 	Film read(long id);
 	List<Film> findAll();
 	String findTitre(long id);
+	int nbIdFilm(long id);
 
 }
