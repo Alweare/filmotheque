@@ -37,29 +37,10 @@ public class ContexteController {
 		return "view-contexte";
 	}	
 	
-	@GetMapping("/session")
-	public String connexionSession(@ModelAttribute("membreSession") Membre membreSession,@RequestParam(name = "email", required=false, defaultValue = "jtrillard@campus-eni.fr") String email) {
-		
-		Membre membreAjour = contexteService.charger(email);
-		// mise à jour du membre en session avec le membre chargé (membreAjour)
-		if(membreAjour != null) {
-			membreSession.setId(membreAjour.getId());
-			membreSession.setNom(membreAjour.getNom());
-			membreSession.setPrenom(membreAjour.getPrenom());
-			membreSession.setPseudo(membreAjour.getPseudo());
-			membreSession.setAdmin(membreAjour.isAdmin());
-		}else {
-			// mettre a jour le membre a null 
-			membreSession.setId(0);
-			membreSession.setNom(null);
-			membreSession.setPrenom(null);
-			membreSession.setPseudo(null);
-			membreSession.setAdmin(false);
-			
-		}
+
 	
 		
-		return "redirect:/films";
+		
 	
 	}
 	@GetMapping("/cloture")
