@@ -24,7 +24,7 @@ public class ParticipantDAOImpl implements ParticipantDAO{
 	private static final String FIND_ACTEURS = "SELECT id,nom,prenom FROM PARTICIPANT INNER JOIN ACTEURS ON PARTICIPANT.id = ACTEURS.id_participant WHERE id_film = :idFilm";
 	private static final String INSERT_ACTEUR = "INSERT INTO ACTEURS (id_film,id_participant) VALUES (:idFilm,:idParticipant)";
 	private static final String COUNT_ID_REAL = "SELECT count(*) FROM PARTICIPANT WHERE id = :idRealisateur";
-	private static final String COUNT_ID_ACTEUR = "SELECT count(*) FROM PARTICIPANT WHERE id = :idActeur";
+	private static final String COUNT_ID_ACTEUR = "SELECT count(*) nbParticipant FROM PARTICIPANT WHERE id in (:listeId)";
 	
 	
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -79,9 +79,9 @@ public class ParticipantDAOImpl implements ParticipantDAO{
 		
 	}
 	@Override
-	public int nbIdActeur (long idActeur) {
+	public int nbIdActeur (List<Long> listeId) {
 		MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-		mapSqlParameterSource.addValue("idActeur", idActeur);
+		mapSqlParameterSource.addValue("listeId", listeId);
 		
 		
 		return jdbcTemplate.queryForObject(COUNT_ID_ACTEUR, mapSqlParameterSource, Integer.class);

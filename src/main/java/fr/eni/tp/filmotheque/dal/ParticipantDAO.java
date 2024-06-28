@@ -11,6 +11,6 @@ public interface ParticipantDAO {
 	List<Participant> findActeurs(long idFilm);
 	void createActeur(long idParticipant,long idFilm);
 	int nbIdReal (long idRealisateur);
-	int nbIdActeur(long idActeur);
+	int nbIdActeur(List<Long> listeId);
 
 }

@@ -3,7 +3,9 @@ package fr.eni.tp.filmotheque.bll;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 
@@ -72,69 +74,7 @@ public class FilmServiceImpl implements FilmService {
 		return f;
 	}
 	
-	// Vérifier que le genre du film existe bien en bdd 
-	private boolean checkGenreExist(long idGenre, BusinessException be) {
-		boolean isValid = false;
-		int nbIdFilm = genreDAO.countIdGenre(idGenre); 
-		if(nbIdFilm == 1 ) {
-			isValid = true;
-		}else {
-			be.add("Erreur, le genre de votre film n'existe pas !");
-			
-		}
-		return isValid;
-		
-		
-	}
-	// verifier que le réalisateur existe bien en bdd
-
-	private boolean checkDirector(long id, BusinessException be) {
-		boolean isValid = false;
-		
-		int testIdDirector =  participantDAO.nbIdReal(id);
-		if(testIdDirector == 1) {
-			isValid = true; 
-			
-		}else {
-			be.add("Le réalisateur n'est pas reconnu en bdd");
-		}
-		return isValid;
-		
-	}
-	// vérifier que les acteurs du film existent bien en bdd
-	private boolean checkActor(long id, BusinessException be) {
-		boolean isValid = false;
-		int testActor = participantDAO.nbIdActeur(id);
-		
-		if(testActor != 0) {
-			isValid = true;
-			
-		}else {
-			be.add("Les acteurs ne sont pas en base !");
-		}
-		
-		
-		return isValid;
-		
-	}
-	//Vérifier que le titre du film est unique. Interdit de créer 2 films du même titre.
-	private boolean checkTitle(long id, BusinessException be) {
-		boolean isValid =false;
-		String title = filmDAO.findTitre(id);
-		
-		if(title == null) {
-			isValid = true;
-			
-		}else {
-			be.add("Erreur, le titre est déjà connu en base. Interdis d'en mettre 2 !");
-		}
-		
-		
-		
-		
-		return isValid;
-		
-	}
+	
 
 	@Override
 	public List<Genre> consulterGenres() {
@@ -166,18 +106,22 @@ public class FilmServiceImpl implements FilmService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = BusinessException.class)
 	public void creerFilm(Film film)throws BusinessException {
 		BusinessException be = new BusinessException();
 //		film.setGenre(new Genre(999, "inconnu"));
-		boolean isValid = checkGenreExist(film.getGenre().getId(),be);
-		isValid &= checkDirector(film.getRealisateur().getId(), be);
-	//	isValid &= checkActor(film.getActeurs().forEach(a -> a.getId()), be);
-		isValid &= checkTitle(film.getId(), be);
-		
+		// valider les acteurs, le genre exist
+		film.getActeurs().add(new Participant(9999, "nomInconnu","prenomInconnu"));
+		boolean isValid = checkActor(film.getActeurs(), be);
+//		boolean isValid = checkGenreExist(film.getGenre().getId(),be);
+//		isValid &= checkDirector(film.getRealisateur().getId(), be);
+//		isValid &= checkTitle(film.getId(), be);
+//		isValid &=  checkActor(film.getActeurs(), be);
+//		
 	    if (be.hasError()) {
 	        throw be;
 	    }
-		
+//		 
 		System.out.println(isValid);
 		
 		if(isValid) {
@@ -186,8 +130,9 @@ public class FilmServiceImpl implements FilmService {
 				System.out.println(film);
 				film.getActeurs().forEach(a -> participantDAO.createActeur(a.getId(),film.getId()));
 				
-			} catch (Exception e) {
-				be.add("erreur le film n'est pas créer, un problème de mise en base est survenu !");
+			} catch (DataAccessException e) {
+				e.printStackTrace();
+				be.add("Erreur lors de la création du film");
 				
 			}
 			
@@ -199,6 +144,75 @@ public class FilmServiceImpl implements FilmService {
 		
 		
 	}
+	// Vérifier que le genre du film existe bien en bdd 
+		private boolean checkGenreExist(long idGenre, BusinessException be) {
+			boolean isValid = false;
+			int nbIdFilm = genreDAO.countIdGenre(idGenre); 
+			if(nbIdFilm == 1 ) {
+				isValid = true;
+			}else {
+				be.add("Erreur, le genre de votre film n'existe pas !");
+				
+			}
+			return isValid;
+			
+			
+		}
+		// verifier que le réalisateur existe bien en bdd
+
+		private boolean checkDirector(long id, BusinessException be) {
+			boolean isValid = false;
+			
+			int testIdDirector =  participantDAO.nbIdReal(id);
+			if(testIdDirector == 1) {
+				isValid = true; 
+				
+			}else {
+				be.add("Le réalisateur n'est pas reconnu en bdd");
+			}
+			return isValid;
+			
+		}
+		// vérifier que les acteurs du film existent bien en bdd
+		private boolean checkActor(List<Participant> actors, BusinessException be) {
+			boolean isValid = true;
+			
+			if(actors != null && actors.isEmpty()) {
+				List<Long> listeIds = actors.stream().map(Participant::getId).toList();
+				int nbActors = participantDAO.nbIdActeur(listeIds);
+			
+				if(listeIds.size() != nbActors) {
+					isValid = false;
+					
+				}else {
+					be.add("Les acteurs sélectionnés ne sont pas tous référencés dans la filmothèque !");
+				}
+			}
+			
+			
+			
+			return isValid;
+			
+		}
+		//Vérifier que le titre du film est unique. Interdit de créer 2 films du même titre.
+		private boolean checkTitle(long id, BusinessException be) {
+			boolean isValid =false;
+			String title = filmDAO.findTitre(id);
+			
+			if(title == null) {
+				isValid = true;
+				
+			}else {
+				be.add("Erreur, le titre est déjà connu en base. Interdis d'en mettre 2 !");
+			}
+			
+			
+			
+			
+			return isValid;
+			
+		}
+
 
 
 	@Override

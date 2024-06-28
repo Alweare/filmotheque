@@ -80,20 +80,23 @@ public class FilmController{
 			return "view-creation-film";
 		}
 		
+		
 		try {
 			this.filmService.creerFilm(filmCreer);
+			return "redirect:/films";
 		} catch (BusinessException e) {
 			e.getErreurs().forEach(err -> {
 				ObjectError error = new ObjectError("globalError", err);
 				bindingResult.addError(error);
 			});
+			return "view-creation-film";
 		}
 		
-		return "redirect:/films";
+
 		
 	}
 	
-
+ 
 
 
 	@ModelAttribute("listeGenre")
