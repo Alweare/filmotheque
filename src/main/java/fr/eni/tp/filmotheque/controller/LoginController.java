@@ -2,8 +2,7 @@ package fr.eni.tp.filmotheque.controller;
 
 import java.security.Principal;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import fr.eni.tp.filmotheque.bll.contexte.ContexteService;
 import fr.eni.tp.filmotheque.bo.Membre;
-import fr.eni.tp.filmotheque.dal.MembreDAO;
+
 
 @Controller
 @SessionAttributes({"membreSession"})
@@ -34,7 +33,7 @@ public class LoginController {
 	}
 	
 	@GetMapping("/session")
-	public String connexionSession(@ModelAttribute("membreSession") Membre membreSession,@RequestParam(name = "email", required=false, defaultValue = "jtrillard@campus-eni.fr") String email,Principal principal) {
+	public String connexionSession(@ModelAttribute("membreSession") Membre membreSession,Principal principal) {
 		
 		Membre membreAjour = contexteService.charger(principal.getName());
 		// mise à jour du membre en session avec le membre chargé (membreAjour)
